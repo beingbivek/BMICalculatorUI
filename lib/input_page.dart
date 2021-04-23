@@ -8,6 +8,11 @@ const activeCardColor = Color(0xFF1D1E33);
 const inactiveCardColor = Color(0xFF111328);
 const bottomContainerColour = Color(0xFFEB1555);
 
+enum Gender {
+  male,
+  female,
+}
+
 class InputPage extends StatefulWidget {
   @override
   _InputPageState createState() => _InputPageState();
@@ -18,9 +23,9 @@ class _InputPageState extends State<InputPage> {
   Color femaleCardColour = inactiveCardColor;
 
   //1=male,2=female
-  void updateColour(int gender) {
+  void updateColour(Gender gender) {
     //for male
-    if (gender == 1) {
+    if (gender == Gender.male) {
       if (femaleCardColour == activeCardColor) {
         maleCardColour = activeCardColor;
         femaleCardColour = inactiveCardColor;
@@ -52,7 +57,7 @@ class _InputPageState extends State<InputPage> {
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
-                        updateColour(1);
+                        updateColour(Gender.male);
                       });
                     },
                     child: ReusableCard(
@@ -68,7 +73,7 @@ class _InputPageState extends State<InputPage> {
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
-                        updateColour(2);
+                        updateColour(Gender.female);
                       });
                     },
                     child: ReusableCard(
