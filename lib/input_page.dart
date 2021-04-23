@@ -1,26 +1,14 @@
+import 'package:bmicalculator/icon_content.dart';
+import 'package:bmicalculator/reusable_card.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 const bottomContainerHeight = 80.0;
-const cardColor = 0xFF1D1E33;
+const activeCardColor = 0xFF1D1E33;
 
 class InputPage extends StatefulWidget {
   @override
   _InputPageState createState() => _InputPageState();
-}
-
-class ReusableCard extends StatelessWidget {
-  ReusableCard({@required this.colour});
-
-  final Color colour;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(15.0),
-      decoration: BoxDecoration(
-          color: colour, borderRadius: BorderRadius.circular(10.0)),
-    );
-  }
 }
 
 class _InputPageState extends State<InputPage> {
@@ -35,17 +23,33 @@ class _InputPageState extends State<InputPage> {
           Expanded(
             child: Row(
               children: [
-                Expanded(child: ReusableCard(colour: Color(cardColor))),
-                Expanded(child: ReusableCard(colour: Color(cardColor)))
+                Expanded(
+                  child: ReusableCard(
+                    colour: Color(activeCardColor),
+                    cardChild: IconContent(
+                      icon: FontAwesomeIcons.mars,
+                      label: 'MALE',
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ReusableCard(
+                    colour: Color(activeCardColor),
+                    cardChild: IconContent(
+                      icon: FontAwesomeIcons.venus,
+                      label: 'FEMALE',
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
-          Expanded(child: ReusableCard(colour: Color(cardColor))),
+          Expanded(child: ReusableCard(colour: Color(activeCardColor))),
           Expanded(
             child: Row(
               children: [
-                Expanded(child: ReusableCard(colour: Color(cardColor))),
-                Expanded(child: ReusableCard(colour: Color(cardColor)))
+                Expanded(child: ReusableCard(colour: Color(activeCardColor))),
+                Expanded(child: ReusableCard(colour: Color(activeCardColor)))
               ],
             ),
           ),
@@ -54,6 +58,14 @@ class _InputPageState extends State<InputPage> {
             margin: EdgeInsets.only(top: 10.0),
             width: double.infinity,
             height: bottomContainerHeight,
+            alignment: Alignment.center,
+            child: Text(
+              'CALCULATE',
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           )
         ],
       ),
