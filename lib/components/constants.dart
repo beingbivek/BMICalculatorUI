@@ -16,7 +16,12 @@ const kNumberStyle = TextStyle(
 );
 
 const kBottomContainerText = TextStyle(
-  fontSize: 18.0,
+  fontSize: 25.0,
+  fontWeight: FontWeight.bold,
+);
+
+const kResultText = TextStyle(
+  fontSize: 50.0,
   fontWeight: FontWeight.bold,
 );
 

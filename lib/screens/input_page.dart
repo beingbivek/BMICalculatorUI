@@ -1,7 +1,10 @@
-import 'package:bmicalculator/constants.dart';
-import 'package:bmicalculator/icon_content.dart';
-import 'package:bmicalculator/results_page.dart';
-import 'package:bmicalculator/reusable_card.dart';
+import 'package:bmicalculator/calculator_brain.dart';
+import 'package:bmicalculator/components/constants.dart';
+import 'package:bmicalculator/components/icon_content.dart';
+import 'package:bmicalculator/components/largebottombutton.dart';
+import 'package:bmicalculator/components/roundiconbutton.dart';
+import 'package:bmicalculator/screens/results_page.dart';
+import 'package:bmicalculator/components/reusable_card.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -17,7 +20,7 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
   Gender selectedGender;
-  int height = 180;
+  int height = 180, weight = 60, age = 20;
 
   @override
   Widget build(BuildContext context) {
@@ -94,11 +97,11 @@ class _InputPageState extends State<InputPage> {
                       activeTrackColor: Colors.white,
                       inactiveTrackColor: Color(0xFF8D8E98),
                       thumbColor: Color(0xFFEB1555),
-                      overlayColor: Color(0x29EB1555),
                       thumbShape:
                           RoundSliderThumbShape(enabledThumbRadius: 15.0),
                       overlayShape:
                           RoundSliderOverlayShape(overlayRadius: 30.0),
+                      overlayColor: Color(0x29EB1555),
                     ),
                     child: Slider(
                       value: height.toDouble(),
@@ -118,36 +121,83 @@ class _InputPageState extends State<InputPage> {
           Expanded(
             child: Row(
               children: [
-                Expanded(child: ReusableCard(colour: kActiveCardColor)),
-                Expanded(child: ReusableCard(colour: kActiveCardColor))
+                Expanded(
+                  child: ReusableCard(
+                    colour: kActiveCardColor,
+                    cardChild: buildBottomColumn('WEIGHT', weight),
+                  ),
+                ),
+                Expanded(
+                    child: ReusableCard(
+                  colour: kActiveCardColor,
+                  cardChild: buildBottomColumn('AGE', age),
+                ))
               ],
             ),
           ),
-          GestureDetector(
-            onTap: () {
+          LargeBottomContainerButton(
+            largeText: 'CALCULATE',
+            onPress: () {
+              CalculatorBrain calc =
+                  CalculatorBrain(height: height, weight: weight);
+
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return ResultsPage();
+                    return ResultsPage(
+                        bmiResult: calc.calculateBMI(),
+                        interpretation: calc.getInterpretation(),
+                        resultText: calc.getResult());
                   },
                 ),
               );
             },
-            child: Container(
-              color: kBottomContainerColour,
-              margin: EdgeInsets.only(top: 10.0),
-              width: double.infinity,
-              height: kBottomContainerHeight,
-              alignment: Alignment.center,
-              child: Text(
-                'CALCULATE',
-                style: kBottomContainerText,
-              ),
-            ),
           )
         ],
       ),
+    );
+  }
+
+  Column buildBottomColumn(String textTitle, int dataType) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          textTitle,
+          style: kLabelTextStyle,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              dataType.toString(),
+              style: kNumberStyle,
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            RoundIconButton(
+              icon: FontAwesomeIcons.minus,
+              toAdd: () {
+                setState(() {
+                  textTitle == 'WEIGHT' ? weight-- : age--;
+                });
+              },
+            ),
+            RoundIconButton(
+              icon: FontAwesomeIcons.plus,
+              toAdd: () {
+                setState(() {
+                  textTitle == 'WEIGHT' ? weight++ : age++;
+                });
+              },
+            )
+          ],
+        ),
+      ],
     );
   }
 }
